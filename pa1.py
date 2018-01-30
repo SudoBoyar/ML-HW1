@@ -1,3 +1,4 @@
+import argparse
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -6,8 +7,6 @@ from sklearn.preprocessing import StandardScaler
 import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
-
-import argparse
 
 
 DEBUG = False
@@ -138,7 +137,9 @@ def main():
 
     print("SSE:", sseA, sseB, sseC)
 
-    # Feature scaling
+    ##
+    # Feature scaling data
+    ##
     sc = StandardScaler()
 
     sc.fit(XtrainA)
@@ -152,8 +153,6 @@ def main():
     sc.fit(XtrainC)
     XtrainCs = sc.transform(XtrainC)
     XtestCs = sc.transform(XtestC)
-
-    # print(XtrainA[:, 1], XtrainAs[:, 1])
 
     # Reset X0 to 1
     XtrainAs[:, 0] = [1] * XtrainAs.shape[0]
@@ -172,15 +171,13 @@ def main():
     wBs = calcW(XtrainBs, YtrainB)
     wCs = calcW(XtrainCs, YtrainC)
 
-    # if DEBUG:
-    #     print("W1s:", wAs)
-
     sseAs = SSE(XtestAs, wAs, YtestA)
     sseBs = SSE(XtestBs, wBs, YtestB)
     sseCs = SSE(XtestCs, wCs, YtestC)
 
     print("Scaled SSE:", sseAs, sseBs, sseCs)
 
+    # Calculate the R2 scores
     varA = np.var(YtestA)
     varB = np.var(YtestB)
     varC = np.var(YtestC)
@@ -194,6 +191,7 @@ def main():
 
     print("R2 Scores:", R2A, R2As, R2B, R2Bs, R2C, R2Cs)
 
+    # Plot the SSEs and R2 Scores
     plot_performance(sseA, sseB, sseC, sseAs, sseBs, sseCs)
     plot_r2(R2A, R2B, R2C, R2As, R2Bs, R2Cs)
 
