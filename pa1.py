@@ -11,16 +11,18 @@ import argparse
 
 
 DEBUG = False
+FILEPATH = None
 
 
 def argparser():
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--debug', action='store_true')
+    parser.add_argument('-f', '--file', default='Features_Variant_1.csv')
     return parser
 
 
 def fetch_data():
-    data = pd.read_csv('Features_Variant_1.csv', header=None)
+    data = pd.read_csv(FILEPATH, header=None)
     # data = pd.read_csv('test.csv', header=None)
 
     # Create target vector and data matrix
@@ -199,7 +201,8 @@ def main():
 if __name__ == '__main__':
     parser = argparser()
     args = parser.parse_args()
-    if args.debug:
-        DEBUG = True
+
+    DEBUG = args.debug
+    FILEPATH = args.file
 
     main()
